@@ -1,0 +1,6 @@
+SCHEMA test_schema;
+
+TYPE Something = BINARY;
+END_TYPE;
+
+END_SCHEMA;

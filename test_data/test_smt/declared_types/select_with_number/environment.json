@@ -1,0 +1,122 @@
+{
+  "submodels": [
+    {
+      "id": "https://aas-smt-from-ifc.aas-core-works.org/test_schema/drop-ins",
+      "submodelElements": [
+        {
+          "idShort": "Number",
+          "value": [
+            {
+              "idShort": "value_integer",
+              "valueType": "xs:long",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "value_real",
+              "valueType": "xs:double",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "Logical",
+          "qualifiers": [
+            {
+              "type": "SMT/AllowedValue",
+              "valueType": "xs:string",
+              "value": "true|false|unknown"
+            }
+          ],
+          "valueType": "xs:string",
+          "modelType": "Property"
+        },
+        {
+          "idShort": "SomeNumber",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "Submodel",
+                "value": "https://aas-smt-from-ifc.aas-core-works.org/test_schema/drop-ins"
+              },
+              {
+                "type": "SubmodelElementCollection",
+                "value": "Number"
+              }
+            ]
+          },
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "SomeBoundedString",
+          "qualifiers": [
+            {
+              "type": "SMT/maxLength",
+              "valueType": "xs:unsignedLong",
+              "value": "1984"
+            }
+          ],
+          "valueType": "xs:string",
+          "modelType": "Property"
+        },
+        {
+          "idShort": "Something",
+          "value": [
+            {
+              "idShort": "value0",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "Submodel",
+                    "value": "https://aas-smt-from-ifc.aas-core-works.org/test_schema/drop-ins"
+                  },
+                  {
+                    "type": "SubmodelElementCollection",
+                    "value": "SomeNumber"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "type": "SMT/AllowedIdShort",
+                  "valueType": "xs:string",
+                  "value": "value"
+                }
+              ],
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "value1",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "Submodel",
+                    "value": "https://aas-smt-from-ifc.aas-core-works.org/test_schema/drop-ins"
+                  },
+                  {
+                    "type": "Property",
+                    "value": "SomeBoundedString"
+                  }
+                ]
+              },
+              "qualifiers": [
+                {
+                  "type": "SMT/AllowedIdShort",
+                  "valueType": "xs:string",
+                  "value": "value"
+                }
+              ],
+              "valueType": "xs:string",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    }
+  ]
+}

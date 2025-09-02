@@ -1,0 +1,14 @@
+SCHEMA test_schema;
+
+TYPE SomeInteger = INTEGER;
+END_TYPE;
+
+TYPE SomeBoundedString = STRING(1984);
+END_TYPE;
+
+TYPE Something = SELECT
+    (SomeInteger
+    ,SomeBoundedString);
+END_TYPE;
+
+END_SCHEMA;

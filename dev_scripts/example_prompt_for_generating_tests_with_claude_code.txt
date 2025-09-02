@@ -1,0 +1,308 @@
+Considering the grammars in `relevant_grammars/`, write a test generator script for `_parse_local_declaration` and store it to deleteme.py, similar to what is already stored in `deleteme.py`. Use no keywords (`entity`, `array`, `end`, `unique` etc.) as identifiers and note that Express schema allows no conditional expressions (`A ? B : C`). Make no tests for letter casing of identifiers (upper, lower, mixed). The conformant types allow for optional bounded spec! Do not test `_parse_*` functions called from our function under test -- assume they are working. Test only for relevant code in the function under test. We only care about positive tests; write no negative tests.
+
+Example deleteme.py:
+import os
+import shutil
+
+# Base directory for test files
+base_dir = "/home/marko/workspace/aas-core-works/aas-smt-from-ifc/test_data/test_parse/parse_method/_parse_local_variable_definition"
+
+# Test cases for local variable definition parsing
+# Grammar: localVar : varDef (',' varDef)* ':' (collectionTypeSel|conformantType) init? ';'
+# varDef : SimpleId
+# init : ':=' (expression | '[]' | UNKNOWN)
+# collectionTypeSel : collectionType | namedType | simpleType | genericType
+# conformantType : conformantArray | conformantBag | conformantList | conformantSet
+test_cases = {
+    # Single variables with simple types
+    "single_var_string": """name : STRING;""",
+
+    "single_var_integer": """count : INTEGER;""",
+
+    "single_var_real": """value : REAL;""",
+
+    "single_var_boolean": """flag : BOOLEAN;""",
+
+    "single_var_logical": """state : LOGICAL;""",
+
+    "single_var_number": """quantity : NUMBER;""",
+
+    "single_var_binary": """data : BINARY;""",
+
+    # Single variables with constrained simple types
+    "single_var_binary_with_width": """content : BINARY(1024);""",
+
+    "single_var_binary_fixed": """header : BINARY(256) FIXED;""",
+
+    "single_var_string_with_width": """message : STRING(255);""",
+
+    "single_var_string_fixed": """code : STRING(50) FIXED;""",
+
+    "single_var_real_with_precision": """measurement : REAL(10);""",
+
+    # Single variables with named types
+    "single_var_named_type": """person : PersonType;""",
+
+    "single_var_complex_named_type": """geometry : IfcGeometricRepresentationItem;""",
+
+    "single_var_component": """component : ComponentReference;""",
+
+    "single_var_material": """material : MaterialProperty;""",
+
+    "single_var_product": """product : ProductDefinition;""",
+
+    # Single variables with generic types
+    "single_var_generic": """item : GENERIC;""",
+
+    "single_var_generic_with_label": """value : GENERIC : ValueType;""",
+
+    "single_var_labeled_generic": """element : GENERIC : ItemType;""",
+
+    "single_var_data_generic": """data : GENERIC : DataType;""",
+
+    # Single variables with bounded collection types
+    "single_var_array_bounded": """matrix : ARRAY [1:10] OF REAL;""",
+
+    "single_var_array_unbounded": """items : ARRAY [0:?] OF STRING;""",
+
+    "single_var_array_bounded_optional": """optionalData : ARRAY [0:50] OF OPTIONAL INTEGER;""",
+
+    "single_var_array_bounded_unique": """uniqueItems : ARRAY [1:20] OF UNIQUE STRING;""",
+
+    "single_var_array_bounded_optional_unique": """specialData : ARRAY [0:30] OF OPTIONAL UNIQUE REAL;""",
+
+    "single_var_set_bounded": """collection : SET [1:10] OF ComponentReference;""",
+
+    "single_var_set_unbounded": """items : SET [0:?] OF MaterialProperty;""",
+
+    "single_var_bag_bounded": """container : BAG [1:50] OF STRING;""",
+
+    "single_var_bag_unbounded": """elements : BAG [0:?] OF INTEGER;""",
+
+    "single_var_list_bounded": """sequence : LIST [1:20] OF REAL;""",
+
+    "single_var_list_bounded_unique": """uniqueSequence : LIST [0:15] OF UNIQUE STRING;""",
+
+    "single_var_list_unbounded": """items : LIST [0:?] OF ComponentType;""",
+
+    "single_var_list_unbounded_unique": """uniqueItems : LIST [0:?] OF UNIQUE MaterialProperty;""",
+
+    # Single variables with conformant types (no bounds)
+    "single_var_conformant_array": """data : ARRAY OF STRING;""",
+
+    "single_var_conformant_array_optional": """optionalData : ARRAY OF OPTIONAL INTEGER;""",
+
+    "single_var_conformant_array_unique": """uniqueData : ARRAY OF UNIQUE REAL;""",
+
+    "single_var_conformant_array_optional_unique": """specialData : ARRAY OF OPTIONAL UNIQUE BOOLEAN;""",
+
+    "single_var_conformant_bag": """container : BAG OF STRING;""",
+
+    "single_var_conformant_list": """sequence : LIST OF INTEGER;""",
+
+    "single_var_conformant_list_unique": """uniqueSequence : LIST OF UNIQUE STRING;""",
+
+    "single_var_conformant_set": """collection : SET OF REAL;""",
+
+    # Conformant types with optional bounds (as noted by user)
+    "single_var_conformant_array_with_bounds": """flexibleMatrix : ARRAY [1:10] OF STRING;""",
+
+    "single_var_conformant_list_with_bounds": """flexibleList : LIST [0:?] OF INTEGER;""",
+
+    "single_var_conformant_set_with_bounds": """flexibleSet : SET [1:5] OF REAL;""",
+
+    "single_var_conformant_bag_with_bounds": """flexibleBag : BAG [0:20] OF STRING;""",
+
+    # Multiple variables with simple types
+    "two_vars_simple": """width, height : REAL;""",
+
+    "three_vars_simple": """x, y, z : INTEGER;""",
+
+    "four_vars_simple": """red, green, blue, alpha : NUMBER;""",
+
+    "mixed_var_names": """minValue, maxValue, defaultValue : REAL;""",
+
+    # Multiple variables with constrained types
+    "two_vars_string_fixed": """firstName, lastName : STRING(100) FIXED;""",
+
+    "three_vars_binary": """header, body, footer : BINARY(512);""",
+
+    "multiple_vars_real_precision": """temperature, pressure, humidity : REAL(15);""",
+
+    # Multiple variables with named types
+    "two_vars_named": """source, target : ComponentReference;""",
+
+    "three_vars_named": """material, texture, surface : MaterialProperty;""",
+
+    "multiple_vars_complex_named": """geometry1, geometry2, geometry3 : IfcGeometricRepresentationItem;""",
+
+    # Multiple variables with generic types
+    "two_vars_generic": """input, output : GENERIC;""",
+
+    "three_vars_generic_labeled": """source, transform, destination : GENERIC : DataType;""",
+
+    "multiple_vars_different_generics": """container, item : GENERIC : ContainerType;""",
+
+    # Multiple variables with collection types
+    "two_vars_array_bounded": """inputMatrix, outputMatrix : ARRAY [1:10] OF REAL;""",
+
+    "three_vars_set_bounded": """sourceSet, targetSet, resultSet : SET [0:?] OF STRING;""",
+
+    "multiple_vars_list_bounded": """sequence1, sequence2, sequence3, sequence4 : LIST [1:20] OF INTEGER;""",
+
+    "two_vars_bag": """inputBag, outputBag : BAG [0:50] OF ComponentReference;""",
+
+    "three_vars_mixed_collections": """arrayData, setData, listData : ARRAY [1:5] OF STRING;""",
+
+    # Multiple variables with conformant types
+    "two_vars_conformant_array": """inputArray, outputArray : ARRAY OF STRING;""",
+
+    "three_vars_conformant_mixed": """arrayData, bagData, listData : ARRAY OF INTEGER;""",
+
+    "multiple_vars_conformant_unique": """data1, data2, data3, data4, data5 : LIST OF UNIQUE REAL;""",
+
+    # Variables with initialization - simple expressions
+    "single_var_init_integer": """count : INTEGER := 0;""",
+
+    "single_var_init_real": """value : REAL := 3.14;""",
+
+    "single_var_init_string": """message : STRING := 'Hello';""",
+
+    "single_var_init_boolean": """flag : BOOLEAN := TRUE;""",
+
+    "single_var_init_logical": """state : LOGICAL := UNKNOWN;""",
+
+    # Variables with initialization - empty collection
+    "single_var_init_empty_array": """items : ARRAY [1:10] OF STRING := [];""",
+
+    "single_var_init_empty_set": """collection : SET [0:?] OF INTEGER := [];""",
+
+    "single_var_init_empty_list": """sequence : LIST [1:20] OF REAL := [];""",
+
+    "single_var_init_empty_bag": """container : BAG [0:50] OF STRING := [];""",
+
+    "single_var_init_empty_conformant_array": """data : ARRAY OF STRING := [];""",
+
+    "single_var_init_empty_conformant_set": """items : SET OF INTEGER := [];""",
+
+    # Variables with initialization - UNKNOWN
+    "single_var_init_unknown": """value : REAL := UNKNOWN;""",
+
+    "single_var_init_unknown_logical": """state : LOGICAL := UNKNOWN;""",
+
+    "single_var_init_unknown_collection": """items : ARRAY [1:10] OF STRING := UNKNOWN;""",
+
+    # Variables with initialization - expressions
+    "single_var_init_expression": """result : REAL := width * height;""",
+
+    "single_var_init_function_call": """length : INTEGER := LENGTH(inputString);""",
+
+    "single_var_init_arithmetic": """total : REAL := base + offset;""",
+
+    "single_var_init_comparison": """isValid : BOOLEAN := count > 0;""",
+
+    # Multiple variables with initialization
+    "two_vars_init_simple": """x, y : REAL := 0.0;""",
+
+    "three_vars_init_integer": """i, j, k : INTEGER := 1;""",
+
+    "multiple_vars_init_string": """name1, name2, name3 : STRING := '';""",
+
+    "multiple_vars_init_empty_collection": """list1, list2 : LIST [1:10] OF INTEGER := [];""",
+
+    # Complex nested collection types
+    "single_var_nested_arrays": """matrix : ARRAY [1:10] OF ARRAY [1:10] OF REAL;""",
+
+    "single_var_nested_mixed": """data : SET [1:5] OF LIST [0:?] OF STRING;""",
+
+    "two_vars_nested_complex": """input, output : ARRAY [1:3] OF SET [0:10] OF ComponentType;""",
+
+    "multiple_vars_deeply_nested": """source, target, result : LIST [1:5] OF BAG [0:20] OF ARRAY [1:8] OF INTEGER;""",
+
+    # Mixed bounded and conformant collections
+    "single_var_bounded_of_conformant": """data : ARRAY [1:5] OF BAG OF STRING;""",
+
+    "single_var_conformant_of_bounded": """container : BAG OF SET [1:10] OF INTEGER;""",
+
+    "two_vars_mixed_bounded_conformant": """input, output : LIST [0:?] OF ARRAY OF REAL;""",
+
+    # Complex initialization expressions
+    "single_var_init_complex_expression": """diagonal : REAL := SQRT((x * x) + (y * y));""",
+
+    "single_var_init_conditional_like": """status : STRING := statusCode;""",
+
+    "single_var_init_nested_function": """result : INTEGER := SIZEOF(QUERY(item <* collection | item > threshold));""",
+
+    # Variables with nested collections and initialization
+    "single_var_nested_init_empty": """matrix : ARRAY [1:5] OF ARRAY [1:5] OF REAL := [];""",
+
+    "single_var_conformant_nested_init": """data : ARRAY OF LIST OF STRING := [];""",
+
+    "two_vars_nested_init_unknown": """matrix1, matrix2 : ARRAY [1:3] OF SET [0:?] OF INTEGER := UNKNOWN;""",
+
+    # Maximum complexity cases
+    "single_var_maximum_complexity": """data : ARRAY [1:5] OF SET [0:?] OF LIST [1:10] OF GENERIC : ValueType;""",
+
+    "single_var_maximum_complexity_with_init": """collection : LIST [1:3] OF BAG [0:20] OF ARRAY [1:8] OF STRING := [];""",
+
+    "two_vars_maximum_complexity": """input, output : ARRAY OF SET OF LIST OF UNIQUE GENERIC : DataType;""",
+
+    "multiple_vars_ultimate_complexity": """source, transform, filter, target, result : BAG [0:?] OF ARRAY [1:10] OF SET OF LIST [1:5] OF GENERIC : ItemType := [];""",
+
+    # Edge cases with many variables
+    "many_vars_simple": """v1, v2, v3, v4, v5, v6, v7, v8 : STRING;""",
+
+    "many_vars_complex": """data1, data2, data3, data4, data5, data6 : ARRAY [1:10] OF GENERIC : DataType := [];""",
+
+    # Real-world style variable names
+    "geometric_vars": """position, orientation, scale : ARRAY [1:3] OF REAL := [];""",
+
+    "material_vars": """diffuseColor, specularColor, ambientColor : SET [1:3] OF NUMBER;""",
+
+    "transformation_vars": """translationVector, rotationMatrix, scalingFactors : LIST OF REAL := [];""",
+
+    "collection_processing_vars": """sourceCollection, filterCriteria, resultCollection : SET OF GENERIC : ItemType := [];""",
+
+    # Complex initialization with different expression types
+    "var_init_self_reference": """normalizedValue : REAL := value / maxValue;""",
+
+    "var_init_attribute_access": """itemCount : INTEGER := data.size;""",
+
+    "var_init_array_access": """firstElement : STRING := items[1];""",
+
+    "var_init_type_casting": """convertedValue : REAL := value;""",
+
+    # Variables with conformant collections and complex initialization
+    "conformant_var_with_complex_init": """processedData : ARRAY OF STRING := QUERY(item <* inputData | LENGTH(item) > 0);""",
+
+    "conformant_collection_empty_init": """flexibleList : LIST OF UNIQUE INTEGER := [];""",
+
+    "conformant_set_unknown_init": """dynamicSet : SET OF REAL := UNKNOWN;""",
+
+    # Mixed variable naming styles
+    "mixed_naming_styles": """currentValue, nextItem, finalResult : REAL;""",
+
+    "technical_variables": """transformMatrix, rotationAngle, scaleFactor : REAL := 1.0;""",
+
+    "processing_variables": """inputBuffer, outputBuffer, tempStorage : ARRAY [1:1024] OF BINARY;""",
+
+    # Extreme complexity tests
+    "deeply_nested_generics": """complexStructure : ARRAY [1:3] OF LIST OF SET [0:10] OF GENERIC : ComplexType := [];""",
+
+    "multiple_complex_vars": """source, intermediate, destination : BAG OF ARRAY [1:5] OF LIST OF UNIQUE STRING := [];"""
+}
+
+# Create directories and files
+for case_name, input_text in test_cases.items():
+    # Create directory for this test case
+    case_dir = os.path.join(base_dir, case_name)
+    os.makedirs(case_dir, exist_ok=True)
+
+    # Write the input text to input.txt
+    input_file = os.path.join(case_dir, "input.txt")
+    with open(input_file, 'w', encoding='utf-8') as f:
+        f.write(input_text)
+
+    print(f"Created: {input_file}")
+
+print(f"\nAll test case files created in: {base_dir}")

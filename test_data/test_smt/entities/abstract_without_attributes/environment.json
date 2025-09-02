@@ -1,0 +1,86 @@
+{
+  "submodels": [
+    {
+      "id": "https://aas-smt-from-ifc.aas-core-works.org/test_schema/drop-ins",
+      "submodelElements": [
+        {
+          "idShort": "Number",
+          "value": [
+            {
+              "idShort": "value_integer",
+              "valueType": "xs:long",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "value_real",
+              "valueType": "xs:double",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "Logical",
+          "qualifiers": [
+            {
+              "type": "SMT/AllowedValue",
+              "valueType": "xs:string",
+              "value": "true|false|unknown"
+            }
+          ],
+          "valueType": "xs:string",
+          "modelType": "Property"
+        },
+        {
+          "idShort": "SomethingAbstract_select",
+          "value": [
+            {
+              "idShort": "value0",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "Submodel",
+                    "value": "https://aas-smt-from-ifc.aas-core-works.org/test_schema/drop-ins"
+                  },
+                  {
+                    "type": "SubmodelElementCollection",
+                    "value": "AnotherSomethingConcrete"
+                  }
+                ]
+              },
+              "modelType": "SubmodelElementCollection"
+            },
+            {
+              "idShort": "value1",
+              "semanticId": {
+                "type": "ModelReference",
+                "keys": [
+                  {
+                    "type": "Submodel",
+                    "value": "https://aas-smt-from-ifc.aas-core-works.org/test_schema/drop-ins"
+                  },
+                  {
+                    "type": "SubmodelElementCollection",
+                    "value": "SomethingConcrete"
+                  }
+                ]
+              },
+              "modelType": "SubmodelElementCollection"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "SomethingConcrete",
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "AnotherSomethingConcrete",
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    }
+  ]
+}

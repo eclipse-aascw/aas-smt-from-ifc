@@ -1,0 +1,15 @@
+SCHEMA test_schema;
+
+ENTITY SomethingAbstract
+    ABSTRACT SUPERTYPE OF (ONEOF(SomethingConcrete, AnotherSomethingConcrete));
+END_ENTITY;
+
+ENTITY SomethingConcrete
+    SUBTYPE OF (SomethingAbstract);
+END_ENTITY;
+
+ENTITY AnotherSomethingConcrete
+    SUBTYPE OF (SomethingAbstract);
+END_ENTITY;
+
+END_SCHEMA;

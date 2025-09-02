@@ -1,0 +1,6 @@
+SCHEMA test_schema;
+
+TYPE Something = STRING(5);
+END_TYPE;
+
+END_SCHEMA;

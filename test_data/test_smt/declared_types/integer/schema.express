@@ -1,0 +1,6 @@
+SCHEMA test_schema;
+
+TYPE Something = INTEGER;
+END_TYPE;
+
+END_SCHEMA;

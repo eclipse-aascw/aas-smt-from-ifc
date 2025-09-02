@@ -1,0 +1,73 @@
+{
+  "submodels": [
+    {
+      "id": "https://aas-smt-from-ifc.aas-core-works.org/test_schema/drop-ins",
+      "submodelElements": [
+        {
+          "idShort": "Number",
+          "value": [
+            {
+              "idShort": "value_integer",
+              "valueType": "xs:long",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "value_real",
+              "valueType": "xs:double",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "Logical",
+          "qualifiers": [
+            {
+              "type": "SMT/AllowedValue",
+              "valueType": "xs:string",
+              "value": "true|false|unknown"
+            }
+          ],
+          "valueType": "xs:string",
+          "modelType": "Property"
+        },
+        {
+          "idShort": "SomeEntityAsType",
+          "semanticId": {
+            "type": "ModelReference",
+            "keys": [
+              {
+                "type": "Submodel",
+                "value": "https://aas-smt-from-ifc.aas-core-works.org/test_schema/drop-ins"
+              },
+              {
+                "type": "SubmodelElementCollection",
+                "value": "SomeEntity"
+              }
+            ]
+          },
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "SomeEntity",
+          "value": [
+            {
+              "idShort": "someAttribute",
+              "qualifiers": [
+                {
+                  "type": "SMT/Cardinality",
+                  "valueType": "xs:string",
+                  "value": "One"
+                }
+              ],
+              "valueType": "xs:boolean",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        }
+      ],
+      "modelType": "Submodel"
+    }
+  ]
+}

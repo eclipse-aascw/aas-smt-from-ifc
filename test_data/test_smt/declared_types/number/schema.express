@@ -1,0 +1,6 @@
+SCHEMA test_schema;
+
+TYPE Something = NUMBER;
+END_TYPE;
+
+END_SCHEMA;
