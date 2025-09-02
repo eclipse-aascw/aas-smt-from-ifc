@@ -6,7 +6,9 @@ import pathlib
 import sys
 from typing import MutableMapping, List
 
-from aas_smt_from_ifc import parse, ir, smt
+from express_schema import parse
+
+from aas_smt_from_ifc import ir, smt
 
 # NOTE (mristin):
 # We do not want to expose the internal functions just for the sake of the experiments.

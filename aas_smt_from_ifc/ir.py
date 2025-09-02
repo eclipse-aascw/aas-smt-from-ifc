@@ -20,8 +20,8 @@ from typing import (
 
 import networkx
 from icontract import ensure, require
+from express_schema import parse, lex
 
-from aas_smt_from_ifc import parse
 from aas_smt_from_ifc.common import (
     NonEmptySequence,
     bullet_points,
@@ -258,13 +258,13 @@ class SetType:
 class Enumeration:
     """Represent a named enumeration with literals."""
 
-    identifier: parse.Identifier
-    values: Final[Sequence[parse.Identifier]]
+    identifier: lex.Identifier
+    values: Final[Sequence[lex.Identifier]]
 
     def __init__(
         self,
-        identifier: parse.Identifier,
-        values: Sequence[parse.Identifier],
+        identifier: lex.Identifier,
+        values: Sequence[lex.Identifier],
     ) -> None:
         self.identifier = identifier
         self.values = values
@@ -290,7 +290,7 @@ class DeclaredType:
     layer since we can distinguish here between enumeration, entity and declared type.
     """
 
-    identifier: Final[parse.Identifier]
+    identifier: Final[lex.Identifier]
 
     # NOTE (mristin):
     # We introduce the getter for the type selection to stress that the external
@@ -303,7 +303,7 @@ class DeclaredType:
     parsed: Final[parse.TypeDeclaration]
 
     def __init__(
-        self, identifier: parse.Identifier, tajp: "Type", parsed: parse.TypeDeclaration
+        self, identifier: lex.Identifier, tajp: "Type", parsed: parse.TypeDeclaration
     ) -> None:
         self.identifier = identifier
         self._tajp = tajp
@@ -326,7 +326,7 @@ def resolve_type(tajp: "Type") -> "TypeWithoutDeclaredType":
 class Attribute:
     """Represent a named attribute of an entity."""
 
-    name: Final[parse.Identifier]
+    name: Final[lex.Identifier]
     optional: Final[bool]
     tajp: "Type"
 
@@ -349,7 +349,7 @@ class Attribute:
 
     def __init__(
         self,
-        name: parse.Identifier,
+        name: lex.Identifier,
         optional: bool,
         tajp: "Type",
         specified_for: "Entity",
@@ -367,7 +367,7 @@ class Attribute:
 class Entity:
     """Represent an entity in a schema."""
 
-    identifier: Final[parse.Identifier]
+    identifier: Final[lex.Identifier]
 
     # NOTE (mristin):
     # We diverge in naming here since we could not wrap our head around the naming
@@ -419,7 +419,7 @@ class Entity:
     abstract: Final[bool]
 
     _attributes: Sequence["Attribute"]
-    _attribute_by_name: Mapping[parse.Identifier, Attribute]
+    _attribute_by_name: Mapping[lex.Identifier, Attribute]
 
     @property
     def attributes(self) -> Sequence["Attribute"]:
@@ -427,7 +427,7 @@ class Entity:
         return self._attributes
 
     @property
-    def attribute_by_name(self) -> Mapping[parse.Identifier, Attribute]:
+    def attribute_by_name(self) -> Mapping[lex.Identifier, Attribute]:
         """Get attributes mapped by their name."""
         return self._attribute_by_name
 
@@ -439,7 +439,7 @@ class Entity:
 
     def __init__(
         self,
-        identifier: parse.Identifier,
+        identifier: lex.Identifier,
         supertypes: Sequence["Entity"],
         subtypes: Sequence["Entity"],
         descendant_concrete_entities: Sequence["Entity"],
@@ -466,24 +466,24 @@ class Entity:
 class Schema:
     """Represent an Express schema."""
 
-    identifier: Final[parse.Identifier]
+    identifier: Final[lex.Identifier]
 
     declared_types: Final[Sequence[DeclaredType]]
-    declared_types_by_id: Final[Mapping[parse.Identifier, DeclaredType]]
+    declared_types_by_id: Final[Mapping[lex.Identifier, DeclaredType]]
     declared_types_topologically_sorted: Final[Sequence[DeclaredType]]
 
     enumerations: Final[Sequence[Enumeration]]
-    enumerations_by_id: Final[Mapping[parse.Identifier, Enumeration]]
+    enumerations_by_id: Final[Mapping[lex.Identifier, Enumeration]]
 
     entities: Final[Sequence[Entity]]
-    entities_by_id: Final[Mapping[parse.Identifier, Entity]]
+    entities_by_id: Final[Mapping[lex.Identifier, Entity]]
     entities_topologically_sorted: Final[Sequence[Entity]]
 
     parsed: Final[parse.Schema]
 
     def __init__(
         self,
-        identifier: parse.Identifier,
+        identifier: lex.Identifier,
         declared_types: Sequence[DeclaredType],
         enumerations: Sequence[Enumeration],
         entities: Sequence[Entity],
@@ -578,7 +578,7 @@ def _specifies_nested_unnamed_enumeration(type_selection: parse.TypeSelection) -
 
 def _list_referenced_named_types(
     type_selection: parse.TypeSelection,
-) -> Iterator[parse.Identifier]:
+) -> Iterator[lex.Identifier]:
     """Go over the type selection and list all the named types referenced from it."""
     if isinstance(type_selection, parse.NamedType):
         yield type_selection.reference
@@ -761,10 +761,10 @@ def _try_min_max_length_from_bound_spec(
 
 @ensure(lambda result: (result[0] is not None) ^ (result[1] is not None))
 def _dereference_named_type(
-    identifier: parse.Identifier,
-    declared_types_by_id: Mapping[parse.Identifier, DeclaredType],
-    enumerations_by_id: Mapping[parse.Identifier, Enumeration],
-    entities_by_id: Mapping[parse.Identifier, Entity],
+    identifier: lex.Identifier,
+    declared_types_by_id: Mapping[lex.Identifier, DeclaredType],
+    enumerations_by_id: Mapping[lex.Identifier, Enumeration],
+    entities_by_id: Mapping[lex.Identifier, Entity],
 ) -> Tuple[Optional[Union[DeclaredType, Enumeration, Entity]], Optional[str]]:
     dereferenced_type = declared_types_by_id.get(identifier, None)
     if dereferenced_type is not None:
@@ -790,9 +790,9 @@ def _dereference_named_type(
 )
 def _recursively_translate_type_selection(
     type_selection: parse.TypeSelection,
-    declared_types_by_id: Mapping[parse.Identifier, DeclaredType],
-    enumerations_by_id: Mapping[parse.Identifier, Enumeration],
-    entities_by_id: Mapping[parse.Identifier, Entity],
+    declared_types_by_id: Mapping[lex.Identifier, DeclaredType],
+    enumerations_by_id: Mapping[lex.Identifier, Enumeration],
+    entities_by_id: Mapping[lex.Identifier, Entity],
 ) -> Tuple[Optional["Type"], Optional[str]]:
     """
     De-reference the named types in the given type selection recursively.
@@ -1209,9 +1209,9 @@ class _TypeDomainRulesInterpreter:
 # fmt: on
 def _resolve_declared_types_in_situ(
     declared_types: Sequence[DeclaredType],
-    declared_types_by_id: Mapping[parse.Identifier, DeclaredType],
-    enumerations_by_id: Mapping[parse.Identifier, Enumeration],
-    entities_by_id: Mapping[parse.Identifier, Entity],
+    declared_types_by_id: Mapping[lex.Identifier, DeclaredType],
+    enumerations_by_id: Mapping[lex.Identifier, Enumeration],
+    entities_by_id: Mapping[lex.Identifier, Entity],
 ) -> Optional[NonEmptySequence[str]]:
     """
     Resolve the underlying types beneath the declared types.
@@ -1586,9 +1586,9 @@ def _topologically_sorted_entities(
 # fmt: on
 def _resolve_entity_attributes_in_situ(
     entities: Sequence[Entity],
-    declared_types_by_id: Mapping[parse.Identifier, DeclaredType],
-    enumerations_by_id: Mapping[parse.Identifier, Enumeration],
-    entities_by_id: Mapping[parse.Identifier, Entity],
+    declared_types_by_id: Mapping[lex.Identifier, DeclaredType],
+    enumerations_by_id: Mapping[lex.Identifier, Enumeration],
+    entities_by_id: Mapping[lex.Identifier, Entity],
 ) -> Optional[NonEmptySequence[str]]:
     """
     Resolve the attributes in-place by translating their type selections.

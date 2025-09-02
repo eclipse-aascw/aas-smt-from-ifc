@@ -6,8 +6,10 @@ import unittest
 from typing import List, Optional
 from unittest.mock import Mock
 
+from express_schema import parse, lex
+
 import tests.common
-from aas_smt_from_ifc import ir, parse
+from aas_smt_from_ifc import ir
 from aas_smt_from_ifc.common import bullet_points
 
 
@@ -18,7 +20,7 @@ class TestTopologicalSort(unittest.TestCase):
         identifier: str, supertypes: Optional[List[ir.Entity]] = None
     ) -> ir.Entity:
         entity = Mock(spec=ir.Entity)
-        entity.identifier = parse.Identifier(identifier)
+        entity.identifier = lex.Identifier(identifier)
         entity.supertypes = supertypes or []
         entity.subtypes = []
         return entity
@@ -177,9 +179,9 @@ class TestTranslate(unittest.TestCase):
 
         self.assertEqual(len(ir_schema.entities), 3)
 
-        entity_a = ir_schema.entities_by_id[parse.Identifier("A")]
-        entity_b = ir_schema.entities_by_id[parse.Identifier("B")]
-        entity_c = ir_schema.entities_by_id[parse.Identifier("C")]
+        entity_a = ir_schema.entities_by_id[lex.Identifier("A")]
+        entity_b = ir_schema.entities_by_id[lex.Identifier("B")]
+        entity_c = ir_schema.entities_by_id[lex.Identifier("C")]
 
         # Check supertypes
         # noinspection PyTypeChecker
@@ -199,35 +201,35 @@ class TestTranslate(unittest.TestCase):
 
         # Check attributes
         self.assertListEqual(
-            [parse.Identifier("attr_a")], [attr.name for attr in entity_a.attributes]
+            [lex.Identifier("attr_a")], [attr.name for attr in entity_a.attributes]
         )
 
         self.assertListEqual(
-            [parse.Identifier("attr_b")], [attr.name for attr in entity_b.attributes]
+            [lex.Identifier("attr_b")], [attr.name for attr in entity_b.attributes]
         )
 
         # Entity C should have inherited attr_a and attr_b, and have its own attr_c.
         self.assertListEqual(
             [
-                parse.Identifier("attr_a"),
-                parse.Identifier("attr_b"),
-                parse.Identifier("attr_c"),
+                lex.Identifier("attr_a"),
+                lex.Identifier("attr_b"),
+                lex.Identifier("attr_c"),
             ],
             [attr.name for attr in entity_c.attributes],
         )
 
         assert (
-            entity_c.attribute_by_name[parse.Identifier("attr_a")].specified_for
+            entity_c.attribute_by_name[lex.Identifier("attr_a")].specified_for
             is entity_a
         )
 
         assert (
-            entity_c.attribute_by_name[parse.Identifier("attr_b")].specified_for
+            entity_c.attribute_by_name[lex.Identifier("attr_b")].specified_for
             is entity_b
         )
 
         assert (
-            entity_c.attribute_by_name[parse.Identifier("attr_c")].specified_for
+            entity_c.attribute_by_name[lex.Identifier("attr_c")].specified_for
             is entity_c
         )
 
@@ -272,8 +274,8 @@ class TestConcreteTypes(unittest.TestCase):
         assert ir_errors is None
         assert ir_schema is not None
 
-        entity_a = ir_schema.entities_by_id[parse.Identifier("ConcreteA")]
-        entity_b = ir_schema.entities_by_id[parse.Identifier("ConcreteB")]
+        entity_a = ir_schema.entities_by_id[lex.Identifier("ConcreteA")]
+        entity_b = ir_schema.entities_by_id[lex.Identifier("ConcreteB")]
 
         # Both entities should be concrete and only include themselves in concrete_types
         self.assertFalse(entity_a.abstract)
@@ -314,9 +316,9 @@ class TestConcreteTypes(unittest.TestCase):
         assert ir_errors is None
         assert ir_schema is not None
 
-        grandparent = ir_schema.entities_by_id[parse.Identifier("AbstractGrandparent")]
-        parent = ir_schema.entities_by_id[parse.Identifier("ConcreteParent")]
-        child = ir_schema.entities_by_id[parse.Identifier("ConcreteChild")]
+        grandparent = ir_schema.entities_by_id[lex.Identifier("AbstractGrandparent")]
+        parent = ir_schema.entities_by_id[lex.Identifier("ConcreteParent")]
+        child = ir_schema.entities_by_id[lex.Identifier("ConcreteChild")]
 
         # Check abstractness
         self.assertTrue(grandparent.abstract)
@@ -367,10 +369,10 @@ class TestConcreteTypes(unittest.TestCase):
         assert ir_errors is None
         assert ir_schema is not None
 
-        abstract_a = ir_schema.entities_by_id[parse.Identifier("AbstractA")]
-        abstract_b = ir_schema.entities_by_id[parse.Identifier("AbstractB")]
-        concrete_c = ir_schema.entities_by_id[parse.Identifier("ConcreteC")]
-        concrete_d = ir_schema.entities_by_id[parse.Identifier("ConcreteD")]
+        abstract_a = ir_schema.entities_by_id[lex.Identifier("AbstractA")]
+        abstract_b = ir_schema.entities_by_id[lex.Identifier("AbstractB")]
+        concrete_c = ir_schema.entities_by_id[lex.Identifier("ConcreteC")]
+        concrete_d = ir_schema.entities_by_id[lex.Identifier("ConcreteD")]
 
         # Check abstractness
         self.assertTrue(abstract_a.abstract)
@@ -416,8 +418,8 @@ class TestInterpretingOfTypeDeclarationDomainRules(unittest.TestCase):
         assert translation_errors is None
         assert schema is not None
 
-        some_entity = schema.entities_by_id[parse.Identifier("SomeEntity")]
-        tajp = some_entity.attribute_by_name[parse.Identifier("someAttribute")].tajp
+        some_entity = schema.entities_by_id[lex.Identifier("SomeEntity")]
+        tajp = some_entity.attribute_by_name[lex.Identifier("someAttribute")].tajp
 
         assert isinstance(tajp, ir.DeclaredType)
         self.assertEqual(tajp.identifier, "RestrictedString")
@@ -458,8 +460,8 @@ class TestInterpretingOfTypeDeclarationDomainRules(unittest.TestCase):
         assert translation_errors is None
         assert schema is not None
 
-        some_entity = schema.entities_by_id[parse.Identifier("SomeEntity")]
-        tajp = some_entity.attribute_by_name[parse.Identifier("someAttribute")].tajp
+        some_entity = schema.entities_by_id[lex.Identifier("SomeEntity")]
+        tajp = some_entity.attribute_by_name[lex.Identifier("someAttribute")].tajp
 
         assert isinstance(tajp, ir.DeclaredType)
         self.assertEqual(tajp.identifier, "BoundedInteger")
@@ -503,8 +505,8 @@ class TestInterpretingOfTypeDeclarationDomainRules(unittest.TestCase):
         assert translation_errors is None
         assert schema is not None
 
-        some_entity = schema.entities_by_id[parse.Identifier("SomeEntity")]
-        tajp = some_entity.attribute_by_name[parse.Identifier("someAttribute")].tajp
+        some_entity = schema.entities_by_id[lex.Identifier("SomeEntity")]
+        tajp = some_entity.attribute_by_name[lex.Identifier("someAttribute")].tajp
 
         assert isinstance(tajp, ir.DeclaredType)
         self.assertEqual(tajp.identifier, "BoundedReal")
@@ -546,8 +548,8 @@ class TestInterpretingOfTypeDeclarationDomainRules(unittest.TestCase):
         assert translation_errors is None
         assert schema is not None
 
-        some_entity = schema.entities_by_id[parse.Identifier("SomeEntity")]
-        tajp = some_entity.attribute_by_name[parse.Identifier("someAttribute")].tajp
+        some_entity = schema.entities_by_id[lex.Identifier("SomeEntity")]
+        tajp = some_entity.attribute_by_name[lex.Identifier("someAttribute")].tajp
 
         assert isinstance(tajp, ir.DeclaredType)
         self.assertEqual(tajp.identifier, "ExactInteger")
@@ -589,8 +591,8 @@ class TestInterpretingOfTypeDeclarationDomainRules(unittest.TestCase):
         assert translation_errors is None
         assert schema is not None
 
-        some_entity = schema.entities_by_id[parse.Identifier("SomeEntity")]
-        tajp = some_entity.attribute_by_name[parse.Identifier("someAttribute")].tajp
+        some_entity = schema.entities_by_id[lex.Identifier("SomeEntity")]
+        tajp = some_entity.attribute_by_name[lex.Identifier("someAttribute")].tajp
 
         assert isinstance(tajp, ir.DeclaredType)
         self.assertEqual(tajp.identifier, "ExactReal")
@@ -636,12 +638,12 @@ class TestInterpretingOfTypeDeclarationDomainRules(unittest.TestCase):
         assert translation_errors is None
         assert schema is not None
 
-        some_entity = schema.entities_by_id[parse.Identifier("SomeEntity")]
+        some_entity = schema.entities_by_id[lex.Identifier("SomeEntity")]
 
         # The Color type should have the choice inferred.
 
         color_type = some_entity.attribute_by_name[
-            parse.Identifier("colorAttribute")
+            lex.Identifier("colorAttribute")
         ].tajp
         assert isinstance(color_type, ir.DeclaredType)
         self.assertEqual(color_type.identifier, "Color")
@@ -657,7 +659,7 @@ class TestInterpretingOfTypeDeclarationDomainRules(unittest.TestCase):
         # to its items.
 
         color_list_type = some_entity.attribute_by_name[
-            parse.Identifier("colorListAttribute")
+            lex.Identifier("colorListAttribute")
         ].tajp
         assert isinstance(color_list_type, ir.DeclaredType)
         self.assertEqual(color_list_type.identifier, "ColorList")
@@ -701,10 +703,10 @@ class TestInterpretingOfTypeDeclarationDomainRules(unittest.TestCase):
         assert translation_errors is None
         assert schema is not None
 
-        some_entity = schema.entities_by_id[parse.Identifier("SomeEntity")]
+        some_entity = schema.entities_by_id[lex.Identifier("SomeEntity")]
 
         entity_list_type = some_entity.attribute_by_name[
-            parse.Identifier("someAttribute")
+            lex.Identifier("someAttribute")
         ].tajp
 
         assert isinstance(entity_list_type, ir.DeclaredType)
@@ -749,14 +751,12 @@ class TestInterpretingOfTypeDeclarationDomainRules(unittest.TestCase):
         assert translation_errors is None
         assert schema is not None
 
-        some_entity = schema.entities_by_id[parse.Identifier("SomeEntity")]
+        some_entity = schema.entities_by_id[lex.Identifier("SomeEntity")]
 
-        some_enumeration = schema.enumerations_by_id[
-            parse.Identifier("SomeEnumeration")
-        ]
+        some_enumeration = schema.enumerations_by_id[lex.Identifier("SomeEnumeration")]
 
         enumeration_list_type = some_entity.attribute_by_name[
-            parse.Identifier("someAttribute")
+            lex.Identifier("someAttribute")
         ].tajp
 
         assert isinstance(enumeration_list_type, ir.DeclaredType)

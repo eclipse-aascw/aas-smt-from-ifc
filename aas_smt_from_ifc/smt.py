@@ -23,9 +23,10 @@ from aas_core3 import (
     types as aas_types,
     verification as aas_verification,
 )
+from express_schema import lex
 from icontract import ensure, require
 
-from aas_smt_from_ifc import ir, re_escaping, parse
+from aas_smt_from_ifc import ir, re_escaping
 from aas_smt_from_ifc.common import (
     NonNegativeInt,
     assert_never,
@@ -791,7 +792,7 @@ def _find_offender_and_dump_it(
 
 
 class _WithIdentifier(Protocol):
-    identifier: parse.Identifier
+    identifier: lex.Identifier
 
 
 def translate(

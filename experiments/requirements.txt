@@ -1,2 +1,3 @@
  aas-core3.0-protobuf==0.0.2
 tqdm
+ifcopenshell==0.8.4
