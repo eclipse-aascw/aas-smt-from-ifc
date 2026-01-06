@@ -1,0 +1,10 @@
+SCHEMA test_schema;
+
+TYPE SomeEntityAsType = SomeEntity;
+END_TYPE;
+
+ENTITY SomeEntity;
+    someAttribute: BOOLEAN;
+END_ENTITY;
+
+END_SCHEMA;

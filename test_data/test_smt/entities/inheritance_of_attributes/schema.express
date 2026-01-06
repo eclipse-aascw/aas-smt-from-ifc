@@ -1,0 +1,18 @@
+SCHEMA test_schema;
+
+ENTITY SomethingAbstract
+    ABSTRACT SUPERTYPE OF (ONEOF(SomethingConcrete, AnotherSomethingConcrete));
+    somethingFromAbstract: BOOLEAN;
+END_ENTITY;
+
+ENTITY SomethingConcrete
+    SUBTYPE OF (SomethingAbstract);
+    somethingFromConcrete: INTEGER;
+END_ENTITY;
+
+ENTITY AnotherSomethingConcrete
+    SUBTYPE OF (SomethingAbstract);
+    somethingFromAnotherConcrete: REAL;
+END_ENTITY;
+
+END_SCHEMA;

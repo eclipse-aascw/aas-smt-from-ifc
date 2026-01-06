@@ -1,0 +1,6 @@
+SCHEMA test_schema;
+
+TYPE Something = SET OF BOOLEAN;
+END_TYPE;
+
+END_SCHEMA;

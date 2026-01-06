@@ -1,0 +1,7 @@
+SCHEMA test_schema;
+
+ENTITY SomethingConcrete;
+    maybeSomeInteger: OPTIONAL INTEGER;
+END_ENTITY;
+
+END_SCHEMA;

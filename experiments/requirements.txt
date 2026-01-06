@@ -1,0 +1,2 @@
+ aas-core3.0-protobuf==0.0.2
+tqdm

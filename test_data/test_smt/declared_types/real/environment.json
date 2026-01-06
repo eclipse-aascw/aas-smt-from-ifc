@@ -1,0 +1,43 @@
+{
+  "submodels": [
+    {
+      "id": "https://aas-smt-from-ifc.aas-core-works.org/test_schema/drop-ins",
+      "submodelElements": [
+        {
+          "idShort": "Number",
+          "value": [
+            {
+              "idShort": "value_integer",
+              "valueType": "xs:long",
+              "modelType": "Property"
+            },
+            {
+              "idShort": "value_real",
+              "valueType": "xs:double",
+              "modelType": "Property"
+            }
+          ],
+          "modelType": "SubmodelElementCollection"
+        },
+        {
+          "idShort": "Logical",
+          "qualifiers": [
+            {
+              "type": "SMT/AllowedValue",
+              "valueType": "xs:string",
+              "value": "true|false|unknown"
+            }
+          ],
+          "valueType": "xs:string",
+          "modelType": "Property"
+        },
+        {
+          "idShort": "Something",
+          "valueType": "xs:double",
+          "modelType": "Property"
+        }
+      ],
+      "modelType": "Submodel"
+    }
+  ]
+}
