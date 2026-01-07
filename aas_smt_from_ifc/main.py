@@ -8,9 +8,10 @@ import sys
 from typing import Mapping
 
 from aas_core3 import jsonization as aas_jsonization, xmlization as aas_xmlization
+from express_schema import parse
 
 import aas_smt_from_ifc
-from aas_smt_from_ifc import parse, ir, codegen, smt
+from aas_smt_from_ifc import ir, codegen, smt
 from aas_smt_from_ifc.common import bullet_points, assert_never
 
 assert aas_smt_from_ifc.__doc__ == __doc__

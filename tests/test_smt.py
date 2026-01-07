@@ -6,9 +6,10 @@ import os
 import unittest
 
 from aas_core3 import jsonization as aas_jsonization
+from express_schema import parse
 
 import tests.common
-from aas_smt_from_ifc import parse, ir, smt
+from aas_smt_from_ifc import ir, smt
 from aas_smt_from_ifc.common import bullet_points
 
 

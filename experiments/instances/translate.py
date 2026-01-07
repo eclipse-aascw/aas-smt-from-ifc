@@ -24,9 +24,9 @@ from aas_core3 import (
 )
 from icontract import ensure, require
 
-import experiments.instances.IFC2X3  # pylint: disable=import-error
-import experiments.instances.IFC4  # pylint: disable=import-error
-import experiments.instances.IFC4X3_ADD2  # pylint: disable=import-error
+import experiments.instances.IFC2X3  # pylint: disable=import-error,no-member
+import experiments.instances.IFC4  # pylint: disable=import-error,no-member,no-name-in-module
+import experiments.instances.IFC4X3_ADD2  # pylint: disable=import-error,no-member
 
 
 class _ByteCounter:
@@ -194,11 +194,11 @@ def process_chunk(args: ChunkArgs) -> Outcome:
     # Determine module based on schema
     to_aas_module: ModuleType
     if model.schema == "IFC4":
-        to_aas_module = experiments.instances.IFC4
+        to_aas_module = experiments.instances.IFC4  # pylint: disable=no-member
     elif model.schema in ("IFC4X3", "IFC4X3_ADD2"):
-        to_aas_module = experiments.instances.IFC4X3_ADD2
+        to_aas_module = experiments.instances.IFC4X3_ADD2  # pylint: disable=no-member
     elif model.schema == "IFC2X3":
-        to_aas_module = experiments.instances.IFC2X3
+        to_aas_module = experiments.instances.IFC2X3  # pylint: disable=no-member
     else:
         raise RuntimeError(f"Unhandled schema: {model.schema}")
 
@@ -380,11 +380,13 @@ def main() -> None:
 
         to_aas_module: ModuleType
         if model.schema == "IFC4":
-            to_aas_module = experiments.instances.IFC4
+            to_aas_module = experiments.instances.IFC4  # pylint: disable=no-member
         elif model.schema in ("IFC4X3", "IFC4X3_ADD2"):
-            to_aas_module = experiments.instances.IFC4X3_ADD2
+            to_aas_module = (
+                experiments.instances.IFC4X3_ADD2
+            )  # pylint: disable=no-member
         elif model.schema == "IFC2X3":
-            to_aas_module = experiments.instances.IFC2X3
+            to_aas_module = experiments.instances.IFC2X3  # pylint: disable=no-member
         else:
             raise RuntimeError(f"Unhandled schema: {model.schema}")
 

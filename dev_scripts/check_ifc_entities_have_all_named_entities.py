@@ -6,7 +6,8 @@ import pathlib
 import sys
 from typing import List, Optional
 
-from aas_smt_from_ifc import parse
+from express_schema import parse
+
 from aas_smt_from_ifc.common import bullet_points, NonEmptySequence
 
 
@@ -28,7 +29,7 @@ def _check(schema: parse.Schema) -> Optional[NonEmptySequence[str]]:
                     )
 
     if len(messages) > 0:
-        return messages
+        return NonEmptySequence(messages)
 
     return None
 

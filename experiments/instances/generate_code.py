@@ -3,8 +3,10 @@
 import os.path
 import pathlib
 
+from express_schema import parse
+
 import tests.common
-from aas_smt_from_ifc import parse, ir, codegen, smt
+from aas_smt_from_ifc import ir, codegen, smt
 from aas_smt_from_ifc.common import bullet_points
 
 

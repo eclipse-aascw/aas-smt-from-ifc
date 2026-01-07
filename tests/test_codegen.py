@@ -2,8 +2,10 @@
 
 import unittest
 
+from express_schema import parse
+
 import tests.common
-from aas_smt_from_ifc import parse, ir, smt, codegen
+from aas_smt_from_ifc import ir, smt, codegen
 from aas_smt_from_ifc.common import bullet_points
 
 

@@ -3,6 +3,10 @@ aas-smt-from-ifc
 ****************
 Convert IFC data structures to AAS Submodel Templates.
 
+.. image:: https://github.com/aas-core-works/aas-smt-from-ifc/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/aas-core-works/aas-smt-from-ifc/actions/workflows/ci.yml
+    :alt: Continuous integration
+
 Installation
 ============
 Check out the repository and change to its directory.
@@ -60,3 +64,23 @@ You can now run ``aas-smt-from-ifc`` (see the next section, "--help").
                             Path where to write the generated artefact
 
 .. Help ends: aas-smt-from-ifc --help
+
+Experiments
+===========
+
+The experiments live in `experiments/`_ directory.
+
+.. _experiments/: https://github.com/aas-core-works/aas-smt-from-ifc/tree/main/experiments
+
+Assuming you are still in the virtual environment and at the root of the repository, install the experiment dependencies by:
+
+.. code-block::
+
+    pip3 install -r experiments/requirements.txt
+
+Then you can run the individual experiments directly.
+For example:
+
+.. codeb-block::
+
+    python experiments/templates/quantify_number_of_submodels.py
