@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
 """Iterate over IFC entities and see if we can easily transform them to simple IR."""
 
 import argparse

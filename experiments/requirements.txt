@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
  aas-core3.0-protobuf==0.0.2
 tqdm
 ifcopenshell==0.8.4

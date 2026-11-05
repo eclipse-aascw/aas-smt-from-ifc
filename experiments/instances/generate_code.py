@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
 # pylint: disable=missing-docstring
 
 import os.path
@@ -8,6 +12,20 @@ from express_schema import parse
 import tests.common
 from aas_smt_from_ifc import ir, codegen, smt
 from aas_smt_from_ifc.common import bullet_points
+
+# NOTE (aaronzi, 2026-11-05):
+# The code generator does not emit any copyright or license information, so we
+# prepend the header to the generated modules ourselves. Otherwise, the headers
+# would be lost on every re-generation.
+#
+# REUSE-IgnoreStart
+_LICENSE_HEADER = """\
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
+"""
+# REUSE-IgnoreEnd
 
 
 def main() -> None:
@@ -38,7 +56,7 @@ def main() -> None:
         )
 
         target_path = this_dir / f"{schema.identifier}.py"
-        target_path.write_text(code, encoding="utf-8")
+        target_path.write_text(_LICENSE_HEADER + code, encoding="utf-8")
         print(f"Written to: {target_path}")
 
 

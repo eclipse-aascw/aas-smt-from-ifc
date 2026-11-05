@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
@@ -38,6 +42,7 @@ dev = [
     "pylint==3.3.7",
     "coverage==7.8.1",
     "types-networkx==3.5.0.20251106",
+    "reuse==6.3.0",
 ]
 
 [project.scripts]

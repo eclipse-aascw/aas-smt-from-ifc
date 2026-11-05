@@ -1,0 +1,13 @@
+EXPRESS syntax of ISO 10303-11:1994: no license granted
+
+relevant_grammars/iso-10303-11.bnf reproduces the syntax rules of the EXPRESS
+language as specified in ISO 10303-11:1994 (Annex A). The file was copied from
+https://github.com/dustintownsend/EXPRESS-Modeling-Language-References, which
+does not state any license.
+
+The copyright on ISO 10303-11 is held by the International Organization for
+Standardization (ISO). No license to copy or redistribute this file is known
+to the aas-smt-from-ifc project.
+
+The file is kept in this repository for reference only. It is not used by the
+code and is not part of the distributed package.
