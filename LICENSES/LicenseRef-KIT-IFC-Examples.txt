@@ -1,0 +1,14 @@
+KIT IFC Examples: terms of use
+
+The IFC example models of the Institute for Automation and Applied Informatics
+(IAI) of the Karlsruhe Institute of Technology (KIT), published at
+https://www.ifcwiki.org/index.php?title=KIT_IFC_Examples, are provided for
+unrestricted use.
+
+If you use these examples for publications, please give the following source:
+
+    Institute for Automation and Applied Informatics (IAI) /
+    Karlsruhe Institute of Technology (KIT)
+
+No other license text is published for these models. This file records the
+terms stated on the page above.

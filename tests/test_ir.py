@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
 # pylint: disable=missing-docstring
 # pylint: disable=protected-access
 

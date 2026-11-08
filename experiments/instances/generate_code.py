@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
 # pylint: disable=missing-docstring
 
 import os.path
@@ -8,6 +12,29 @@ from express_schema import parse
 import tests.common
 from aas_smt_from_ifc import ir, codegen, smt
 from aas_smt_from_ifc.common import bullet_points
+
+# NOTE (aaronzi, 2026-11-05):
+# The code generator does not emit any copyright or license information, so we
+# prepend the header to the generated modules ourselves. Otherwise, the headers
+# would be lost on every re-generation. The generated code is translated from
+# the IFC schemas, so the header also attributes the schema to buildingSMART,
+# as the terms of the schemas ask for.
+#
+# REUSE-IgnoreStart
+_LICENSE_HEADER = """\
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
+"""
+# REUSE-IgnoreEnd
+
+_ATTRIBUTION = """\
+# Generated from the EXPRESS schema {schema_file} of the Industry Foundation
+# Classes (IFC) by buildingSMART International Limited, published at
+# https://standards.buildingsmart.org/IFC/RELEASE/.
+
+"""
 
 
 def main() -> None:
@@ -38,7 +65,10 @@ def main() -> None:
         )
 
         target_path = this_dir / f"{schema.identifier}.py"
-        target_path.write_text(code, encoding="utf-8")
+        target_path.write_text(
+            _LICENSE_HEADER + _ATTRIBUTION.format(schema_file=schema_path.name) + code,
+            encoding="utf-8",
+        )
         print(f"Written to: {target_path}")
 
 

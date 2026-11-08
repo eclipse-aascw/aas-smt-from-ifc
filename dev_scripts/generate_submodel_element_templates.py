@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
 """Generate the collection of submodel element templates to be referenced by IFC."""
 import json
 import pathlib

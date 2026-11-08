@@ -1,0 +1,95 @@
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
+version = 1
+
+# Prose and metadata where a header would end up in the rendered output
+# (e.g., README shown on GitHub) or which can not carry a comment.
+[[annotations]]
+path = [
+    "AUTHORS",
+    "README.rst",
+    "CLAUDE.md",
+    "experiments/instances/README.md",
+    "test_data/schemas/README.md",
+    "dev_scripts/example_prompt_for_generating_tests_with_claude_code.txt",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 aas-smt-from-ifc AUTHORS"
+SPDX-License-Identifier = "MIT"
+
+# The statistics reports are written by
+# experiments/templates/quantify_number_of_submodels.py and would lose
+# a header on every re-run.
+[[annotations]]
+path = "experiments/templates/stats/*.report.md"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 aas-smt-from-ifc AUTHORS"
+SPDX-License-Identifier = "MIT"
+
+# Test data and the recorded test outputs are read by the tests and compared
+# byte-by-byte, and JSON can not carry a comment.
+[[annotations]]
+path = ["test_data/test_parse/**", "test_data/test_smt/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 aas-smt-from-ifc AUTHORS"
+SPDX-License-Identifier = "MIT"
+
+# Third-party: the IFC EXPRESS schemas by buildingSMART International, kept
+# verbatim as test data (see test_data/schemas/README.md). They are the
+# official releases from https://standards.buildingsmart.org/IFC/RELEASE/,
+# which buildingSMART publishes under CC BY-ND 4.0 (see the LICENSE.md of
+# https://github.com/buildingSMART/IFC4.3.x-development). The notices inside
+# the older files predate that license. "override" makes REUSE ignore the
+# free-form "Copyright by:" prolog comments inside the files, which it can
+# not parse into a holder.
+[[annotations]]
+path = "test_data/schemas/IFC2x3_Final.exp"
+precedence = "override"
+SPDX-FileCopyrightText = "1996-2005 International Alliance for Interoperability (now buildingSMART International Limited)"
+SPDX-License-Identifier = "CC-BY-ND-4.0"
+
+[[annotations]]
+path = "test_data/schemas/IFC4.exp"
+precedence = "override"
+SPDX-FileCopyrightText = "1996-2013 buildingSMART International Limited"
+SPDX-License-Identifier = "CC-BY-ND-4.0"
+
+[[annotations]]
+path = "test_data/schemas/IFC4X3_ADD2.exp"
+precedence = "override"
+SPDX-FileCopyrightText = "1996-2024 buildingSMART International Limited"
+SPDX-License-Identifier = "CC-BY-ND-4.0"
+
+# Third-party: the sample IFC models of the "Simple Scene" (formerly
+# "PCERT-Sample-Scene", IFC 4.3 ADD2) from
+# https://github.com/buildingSMART/Sample-Test-Files, licensed under CC BY 4.0.
+# We keep the files unmodified.
+[[annotations]]
+path = [
+    "experiments/instances/ifc/Building-*.ifc",
+    "experiments/instances/ifc/Infra-*.ifc",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "buildingSMART International Ltd"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# Third-party: the sample IFC model from the KIT IFC Examples
+# (https://www.ifcwiki.org/index.php?title=KIT_IFC_Examples), which are
+# provided for unrestricted use with a request for attribution. We keep the
+# file unmodified.
+[[annotations]]
+path = "experiments/instances/ifc/AC20-FZK-Haus.ifc"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Institute for Automation and Applied Informatics (IAI) / Karlsruhe Institute of Technology (KIT)"
+SPDX-License-Identifier = "LicenseRef-KIT-IFC-Examples"
+
+# Third-party: the ANTLR grammar of EXPRESS, copied from
+# https://github.com/hypar-io/IFC-gen/blob/IFC4/grammar/Express.g4 (MIT).
+# Kept unmodified for reference.
+[[annotations]]
+path = "relevant_grammars/Express.g4"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2023 Hypar, Inc."
+SPDX-License-Identifier = "MIT"

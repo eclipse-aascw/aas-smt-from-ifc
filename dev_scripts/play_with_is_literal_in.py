@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
 # NOTE (mristin):
 # This program is meant to be checked with mypy, not run.
 

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
 """Tokenize and parse than Express schema."""
 
 # pylint: disable=missing-docstring

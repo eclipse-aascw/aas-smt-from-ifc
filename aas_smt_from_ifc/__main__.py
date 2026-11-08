@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 aas-smt-from-ifc AUTHORS
+#
+# SPDX-License-Identifier: MIT
+
 """Run aas-smt-from-fic as Python module."""
 
 import aas_smt_from_ifc.main
