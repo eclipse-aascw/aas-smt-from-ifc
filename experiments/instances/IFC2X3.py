@@ -2,6 +2,10 @@
 #
 # SPDX-License-Identifier: MIT
 
+# Generated from the EXPRESS schema IFC2x3_Final.exp of the Industry Foundation
+# Classes (IFC) by buildingSMART International Limited, published at
+# https://standards.buildingsmart.org/IFC/RELEASE/.
+
 """Convert entity instances of IFC2X3 to AAS."""
 
 import abc

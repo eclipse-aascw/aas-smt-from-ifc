@@ -93,16 +93,3 @@ path = "relevant_grammars/Express.g4"
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2023 Hypar, Inc."
 SPDX-License-Identifier = "MIT"
-
-# Third-party: the EXPRESS syntax of ISO 10303-11:1994 (Annex A), copied from
-# https://github.com/dustintownsend/EXPRESS-Modeling-Language-References,
-# which does not state any license. Kept unmodified for reference only, see
-# LICENSES/LicenseRef-ISO-10303-11-Syntax.txt.
-[[annotations]]
-path = "relevant_grammars/iso-10303-11.bnf"
-precedence = "aggregate"
-SPDX-FileCopyrightText = [
-    "1994 International Organization for Standardization (ISO)",
-    "Dustin Townsend",
-]
-SPDX-License-Identifier = "LicenseRef-ISO-10303-11-Syntax"
