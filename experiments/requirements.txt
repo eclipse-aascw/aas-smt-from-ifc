@@ -1,3 +1,7 @@
  aas-core3.0-protobuf==0.0.2
 tqdm
 ifcopenshell==0.8.4
+# ifcopenshell pulls in numpy. The type stubs of numpy 2.5 use the type
+# statement, which mypy rejects when it checks for Python 3.10 (see
+# python_version in [tool.mypy] of pyproject.toml).
+numpy<2.5
