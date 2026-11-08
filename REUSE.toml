@@ -36,25 +36,30 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2025 aas-smt-from-ifc AUTHORS"
 SPDX-License-Identifier = "MIT"
 
-# Third-party: the IFC EXPRESS schemas, downloaded from buildingSMART
-# (see test_data/schemas/README.md). buildingSMART publishes IFC under
-# CC BY-ND 4.0. We keep the files unmodified, so they carry no header.
+# Third-party: the IFC EXPRESS schemas by buildingSMART International, kept
+# verbatim as test data (see test_data/schemas/README.md). They are the
+# official releases from https://standards.buildingsmart.org/IFC/RELEASE/,
+# which buildingSMART publishes under CC BY-ND 4.0 (see the LICENSE.md of
+# https://github.com/buildingSMART/IFC4.3.x-development). The notices inside
+# the older files predate that license. "override" makes REUSE ignore the
+# free-form "Copyright by:" prolog comments inside the files, which it can
+# not parse into a holder.
 [[annotations]]
 path = "test_data/schemas/IFC2x3_Final.exp"
-precedence = "aggregate"
-SPDX-FileCopyrightText = "1996-2005 International Alliance for Interoperability (now buildingSMART International Ltd)"
+precedence = "override"
+SPDX-FileCopyrightText = "1996-2005 International Alliance for Interoperability (now buildingSMART International Limited)"
 SPDX-License-Identifier = "CC-BY-ND-4.0"
 
 [[annotations]]
 path = "test_data/schemas/IFC4.exp"
-precedence = "aggregate"
-SPDX-FileCopyrightText = "1996-2013 buildingSMART International Ltd"
+precedence = "override"
+SPDX-FileCopyrightText = "1996-2013 buildingSMART International Limited"
 SPDX-License-Identifier = "CC-BY-ND-4.0"
 
 [[annotations]]
 path = "test_data/schemas/IFC4X3_ADD2.exp"
-precedence = "aggregate"
-SPDX-FileCopyrightText = "buildingSMART International Ltd"
+precedence = "override"
+SPDX-FileCopyrightText = "1996-2024 buildingSMART International Limited"
 SPDX-License-Identifier = "CC-BY-ND-4.0"
 
 # Third-party: the sample IFC models of the "Simple Scene" (formerly
